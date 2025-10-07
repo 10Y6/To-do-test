@@ -17,10 +17,6 @@ class Task():
     
     def create_task(self):
         #Create a task to be added to json cache
-        if not self.title:
-            print("La tarea debe tener un titulo.")
-        if not self.description:
-            print("La tarea debe tener una descripcion.")
         
         hash = Hash(self.title)
         self.id = hash.string_to_hash()
@@ -34,7 +30,7 @@ class Task():
         return task
 
     def json_to_dict(self):
-        #Convert to json cache to a dict
+        #Convert from json cache to a dict
         dictio = None
         with open(cache_route,'r') as file:
             dictio = json.loads(file.read())
