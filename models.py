@@ -16,6 +16,7 @@ class Task():
         self.done = done
     
     def create_task(self):
+        #Create a task to be added to json cache
         if not self.title:
             print("La tarea debe tener un titulo.")
         if not self.description:
@@ -31,20 +32,37 @@ class Task():
             'done': self.done
         }
         return task
-    
-    def dict_to_json(self):
-        lista = []
-        
-        with open(cache_route,'r') as file:
-             lista = file.read(245768)
-             lista = json.loads(lista)
-        
-        with open(cache_route,'w') as file:
-            lista.append(self.create_task())
-            file.write(json.dumps(lista))
 
     def json_to_dict(self):
+        #Convert to json cache to a dict
         dictio = None
         with open(cache_route,'r') as file:
             dictio = json.loads(file.read())
         return dictio
+    
+    def add_task(self):
+        #Add a task to the json cache
+        dictio = {}
+        with open(cache_route,'r') as file:
+                dictio = file.read()
+                dictio = json.loads(dictio)
+        
+        with open(cache_route,'w') as file:
+            dicti = {self.create_task()['id']:self.create_task()}
+            dictio.update(dicti)
+            file.write(json.dumps(dictio))
+    
+    def delete_task(self,ID):
+        #delete a task from the json cache
+        dictio = {}
+        flag = False
+        with open(cache_route,'r') as file:
+            dictio = file.read()
+            dictio = json.loads(dictio)
+            if ID in dictio: flag = True #is task ID in file?
+        
+        if flag:
+            with open(cache_route,'w') as file:
+                del dictio[ID]
+                file.write(json.dumps(dictio))
+        

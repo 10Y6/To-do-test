@@ -1,5 +1,10 @@
 from models import Task
+import json
+import os.path as path
+import os
 
+to_do_route =  os.path.dirname(os.path.abspath(__file__))
+cache_route = os.path.join(to_do_route,"cache.json")
 
 task_title = ''
 task_description = ''
@@ -21,6 +26,12 @@ while True:
     else:
         task.description = task_description
         if task_description and task_title: break
-
-task.dict_to_json()    
-print(task.json_to_dict())
+try :
+    task.add_task()
+    task.delete_task("#408000003672")
+except json.decoder.JSONDecodeError:
+    with open(cache_route,'w') as file:
+        dictio = {}
+        file.write(json.dumps(dictio))
+    task.add_task()
+    task.delete_task("#408000003672")
